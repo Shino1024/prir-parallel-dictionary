@@ -11,15 +11,23 @@
 #include <omp.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "command_line.cc"
+
 #define CHUNKSIZE   10
 #define N       100
 
 int main (int argc, char *argv[]) 
 {
-int nthreads, tid, i, chunk;
-float a[N], b[N], c[N];
+//int nthreads, tid, i, chunk;
+//float a[N], b[N], c[N];
 
-/* Some initializations */
+CommandLine commandLine;
+
+commandLine.GetUserCommand();
+
+
+/* Some initializations 
 for (i=0; i < N; i++)
   a[i] = b[i] = i * 1.0;
 chunk = CHUNKSIZE;
