@@ -1,4 +1,14 @@
-#ifndef PRIR_FILE_H
-#define PRIR_FILE_H
+#ifndef PRIR_FINDER_H
+#define PRIR_FINDER_H
 
-#endif // PRIR_FILE_H
+namespace parallel {
+    class Finder {
+        public:
+        Finder();
+
+        private:
+        //
+    };
+}
+
+#endif // PRIR_FINDER_H
