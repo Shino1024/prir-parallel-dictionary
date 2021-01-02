@@ -32,4 +32,5 @@ if(OpenMP_CXX_FOUND)
     target_link_libraries(prir_parallel_dictionary_test PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
+target_include_directories(prir_parallel_dictionary_test PUBLIC .)
 target_include_directories(prir_parallel_dictionary_test PUBLIC testing)
