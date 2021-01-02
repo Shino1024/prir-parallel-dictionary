@@ -12,7 +12,7 @@ namespace serialization {
     bool DictSerializer::serialize() {
         std::string draft_data{};
 
-        for (const auto &[key, value] : this->dictionary) {
+        for (const auto &[key, value] : this->dictionary.get_cache()) {
             if (key.find(InsideSeparator) != std::string::npos) {
                 return false;
             }
@@ -25,7 +25,7 @@ namespace serialization {
             if (value.find(OutsideSeparator) != std::string::npos) {
                 return false;
             }
-            draft_data += key += InsideSeparator += value += OutsideSeparator;
+            draft_data += (key + InsideSeparator + value + OutsideSeparator);
         }
 
         this->data = draft_data;
@@ -63,15 +63,15 @@ namespace serialization {
 
         const auto value_pairs = this->split_string(this->data, OutsideSeparator);
         for (const auto &value_pair : value_pairs) {
-            if (std::count(value_pair.begin(), value_pair.end(), InsideSeparator) != 1) {
+            if (std::count(value_pair.begin(), value_pair.end(), *InsideSeparator.c_str()) != 1) {
                 return false;
             }
             const auto pair = this->split_string(value_pair, InsideSeparator);
             if (pair.size() != 2) {
                 return false;
             }
-            const auto key = value_pair[0];
-            const auto value = value_pair[1];
+            const auto key = pair[0];
+            const auto value = pair[1];
             draft_dictionary.insert(key, value);
         }
 

@@ -5,22 +5,17 @@
 #include <string>
 
 namespace dictionary {
-    namespace {
-        enum class DictionaryErrorEnum : uint8_t {
-            NoError,
-            NonexistentKeyError,
-            AlreadyExistingKeyError,
-        };
-    }
-
-    class DictionaryError {
-    public:
-        //
-    private:
-        //
+    enum class DictionaryError : uint8_t {
+        NoError,
+        NonexistentKeyError,
+        AlreadyExistingKeyError,
     };
 
     class Dictionary {
+    private:
+        void initialize();
+        std::map<std::string, std::string> cache{}; // how to divide it for parallel search???
+
     public:
         Dictionary();
         DictionaryError insert(const std::string &key, const std::string &value);
@@ -28,9 +23,7 @@ namespace dictionary {
         DictionaryError remove(const std::string &key);
         void clear();
 
-    private:
-        void initialize();
-        std::map<std::string, std::string> cache; // how to divide it for parallel search???
+        const std::map<std::string, std::string> & get_cache() const;
     };
 }
 

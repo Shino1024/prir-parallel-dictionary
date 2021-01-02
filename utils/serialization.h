@@ -8,8 +8,8 @@
 #include <dictionary/dictionary.h>
 
 namespace serialization {
-    constexpr std::string_view InsideSeparator = '\01';
-    constexpr std::string_view OutsideSeparator = '\02';
+    const std::string InsideSeparator = "\01";
+    const std::string OutsideSeparator = "\02";
 
     class DictSerializer {
     private:
