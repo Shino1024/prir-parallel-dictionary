@@ -1,10 +1,15 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <sstream>
+#include <iostream>
 
 #include "serialization.h"
 
 namespace serialization {
+    const std::string InsideSeparator{";"};
+    const std::string OutsideSeparator{"\n"};
+
     DictSerializer::DictSerializer(const dictionary::Dictionary &dictionary) : dictionary{dictionary} {
         //
     }
@@ -41,17 +46,23 @@ namespace serialization {
         //
     }
 
-    std::vector<std::string> split_string(const std::string &string_to_split,
-                                          const std::string &separator) {
+    std::vector<std::string> DictDeserializer::split_string(const std::string &string_to_split,
+                                                            const std::string &separator) {
         std::vector<std::string> string_parts{};
-        size_t current_position = 0;
-        size_t new_position = 0;
-        std::string current_token{};
-        while ((new_position = string_to_split.find(separator)) != std::string::npos) {
-            current_token = string_to_split.substr(current_position, new_position);
-            string_parts.push_back(current_token);
-            current_position = new_position;
+
+        std::stringstream stream{string_to_split};
+        std::string buffer{};
+        if (string_to_split.find(separator) == std::string::npos) {
+            return string_parts;
         }
+        while (std::getline(stream, buffer, *(separator.c_str()))) {
+            if (buffer == "") {
+                break;
+            }
+            string_parts.push_back(buffer);
+        }
+
+        return string_parts;
     }
 
     bool DictDeserializer::deserialize() {
@@ -63,6 +74,9 @@ namespace serialization {
 
         const auto value_pairs = this->split_string(this->data, OutsideSeparator);
         for (const auto &value_pair : value_pairs) {
+            if (value_pair == "") {
+                break;
+            }
             if (std::count(value_pair.begin(), value_pair.end(), *InsideSeparator.c_str()) != 1) {
                 return false;
             }

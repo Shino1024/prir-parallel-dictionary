@@ -1,11 +1,7 @@
 #include <utils/benchmark.h>
 
 namespace test {
-    namespace {
-        //
-    }
-
-    bool run_all_tests_benchmark() {
-        //
+    bool run_all_benchmark_tests() {
+        return true;
     }
 }

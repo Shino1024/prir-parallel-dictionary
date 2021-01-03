@@ -21,7 +21,13 @@ target_include_directories(prir_parallel_dictionary PUBLIC .)
 # TESTING
 project(prir_parallel_dictionary_test VERSION 1.0 LANGUAGES CXX)
 
-add_executable(prir_parallel_dictionary_test testing/benchmark_test.cpp
+add_executable(prir_parallel_dictionary_test dictionary/dictionary.cpp
+                                             parallel/finder.cpp
+                                             utils/benchmark.cpp
+                                             utils/file.cpp
+                                             utils/serialization.cpp
+                                             testing/main_test.cpp
+                                             testing/benchmark_test.cpp
                                              testing/dictionary_test.cpp
                                              testing/file_test.cpp
                                              testing/report_creation_test.cpp
@@ -33,4 +39,3 @@ if(OpenMP_CXX_FOUND)
 endif()
 
 target_include_directories(prir_parallel_dictionary_test PUBLIC .)
-target_include_directories(prir_parallel_dictionary_test PUBLIC testing)

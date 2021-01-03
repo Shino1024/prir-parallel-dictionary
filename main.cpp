@@ -6,7 +6,7 @@
 #include <utils/report_creation.h>
 #include <utils/serialization.h>
 
-constexpr auto SerializedDictionaryFileName = "SerializedDictionary.bin";
+constexpr auto SerializedDictionaryFileName = "SerializedDictionary.csv";
 
 int main(int argc, char *argv[]) {
     return 0;
