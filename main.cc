@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "command_line.cc"
+#include "command_line.h"
 
 #define CHUNKSIZE   10
 #define N       100

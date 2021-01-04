@@ -1,29 +1,6 @@
 
-#include <iostream>
+#include "command_line.h"
 
-using namespace std;
-
-/*
-Class UserCommand
-
-Class represents DTO used for calling Dictionary Services. Consists of two elements:
-# command - takes values 'r'  for read/find or 'w' for insert
-# payload - searched string or dictionary entry to be inserted
-*/
-
-class UserCommandDTO{
-
-    public:
-        char getOperation(){return this->operation;}
-        string getPayload(){return this->payload;}
-
-        void setOperation(char _operation){ this->operation = _operation;}
-        void setPayload(string _payload){ this->payload = _payload;}
-
-    private:    
-        char operation;
-        string payload;
-};
 
 
 /*
@@ -44,13 +21,13 @@ class Parser{
                 else if (keyword == "put") user_command.setOperation('w');
                     else
                     { 
-                        ReturnParseError();
+                        SetParseError();
                         return user_command;
                     }
 
             if(_entry.substr(3,1)!=" "){
                 cout<< endl <<"Space required after keyword";
-                ReturnParseError();
+                SetParseError();
                 return user_command;
             }
 
@@ -65,31 +42,15 @@ class Parser{
         UserCommandDTO user_command;
         string keyword;
         string payload;
-        void ReturnParseError()
+        void SetParseError()
         {
                 user_command.setOperation('e');
-                user_command.setPayload("Invalid entry. Type get [searched string] or put [string to be inserted]\n");
+                user_command.setPayload("Invalid entry.\n");
         };
 
 };
 
-/*
-Interface between Dictionary and User Interface. This DTO definition should be global.
-*/
 
-class QueryResultDTO{
-
-    public:
-        int getKey(){return this->key;}
-        string getValue(){return this->value;}
-
-        void setKey(int _key){ this->value = _key;}
-        void setValue(string _value){ this->value = _value;}
-
-    private:    
-        int key;
-        string value;
-};
 
 
 
