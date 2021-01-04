@@ -47,7 +47,7 @@ class UserCommandDTO{
 Interface between Dictionary and User Interface. This DTO definition should be global.
 */
 
-class QueryResultDTO{
+class DictQueryDTO{
 
     public:
         string getKey(){return this->key;}
@@ -94,7 +94,7 @@ Encapsulates Dictonary Services Client Logic.
 class DictServiceInvoker{
 
     public:
-        int ExecuteUserCommand(QueryResultDTO&, UserCommandDTO, PerformanceReporter &);
+        int ExecuteUserCommand(DictQueryDTO&, UserCommandDTO, PerformanceReporter &);
 
 };
 
@@ -114,7 +114,7 @@ class CommandLine{
     private:
         Parser parser;
         string _input;
-        QueryResultDTO query_result;
+        DictQueryDTO query_result;
         UserCommandDTO user_command;
         DictServiceInvoker invoker;
         PerformanceReporter performance_reporter;

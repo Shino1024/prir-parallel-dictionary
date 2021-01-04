@@ -1,5 +1,7 @@
 
+#include <bits/stdc++.h>
 #include "command_line.h"
+
 
 UserCommandDTO Parser::ParseUserEntry(string _entry){
     keyword = _entry.substr(0,3);
@@ -9,7 +11,12 @@ UserCommandDTO Parser::ParseUserEntry(string _entry){
     else if (keyword == "exs") { user_command.setOperation(exs); NoArgCheck(_entry);}
     else if (keyword == "exn") { user_command.setOperation(exn); NoArgCheck(_entry);}
     else{
-        if (keyword == "ini") {user_command.setOperation(ini);}
+        if (keyword == "ini")
+        {
+            user_command.setOperation(ini);
+            user_command.setPayload(this->ParseFilename(_entry.substr(4,_entry.size()-4)));
+            return user_command;
+        }
         else if (keyword == "fnd") {user_command.setOperation(fnd);}
         else if (keyword == "put") {user_command.setOperation(put);}
         else if (keyword == "del") {user_command.setOperation(del);}
@@ -39,7 +46,9 @@ void Parser::SetParseError()
 string Parser::ParseFilename(string _entry){
     string filename;
     
-    filename = _entry;
+    stringstream iss(_entry);
+
+    iss >> filename;
 
     cout << "\nFilenameParser: "<<filename;
 
@@ -49,7 +58,7 @@ string Parser::ParseFilename(string _entry){
 
 
 
-int DictServiceInvoker::ExecuteUserCommand(QueryResultDTO& _result, UserCommandDTO _user_command, PerformanceReporter & _performance_reporter){
+int DictServiceInvoker::ExecuteUserCommand(DictQueryDTO& _result, UserCommandDTO _user_command, PerformanceReporter & _performance_reporter){
     
     switch (_user_command.getOperation())
     {
