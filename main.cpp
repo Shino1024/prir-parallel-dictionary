@@ -14,6 +14,7 @@
 
 #include "command_line.h"
 
+
 #define CHUNKSIZE   10
 #define N       100
 
@@ -24,7 +25,10 @@ int main (int argc, char *argv[])
 
 CommandLine commandLine;
 
-commandLine.GetUserCommand();
+//performance_reporter.show_time_report();
+
+commandLine.ProcessUserCommand();
+
 
 
 /* Some initializations 

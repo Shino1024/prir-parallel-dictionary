@@ -1,6 +1,25 @@
 #include <iostream>
+#include "performance_reporter.h"
 
 using namespace std;
+
+#ifndef COMMAND_LINE
+#define COMMAND_LINE
+
+
+enum UserOperation{
+    fnd,
+    del,
+    put,
+    ini,
+    res,
+    exs,
+    exn,
+    sav,
+    upd,
+    unknown
+};
+
 
 /*
 Class UserCommand
@@ -13,14 +32,14 @@ Class represents DTO used for calling Dictionary Services. Consists of two eleme
 class UserCommandDTO{
 
     public:
-        char getOperation(){return this->operation;}
+        UserOperation getOperation(){return this->operation;}
         string getPayload(){return this->payload;}
 
-        void setOperation(char _operation){ this->operation = _operation;}
+        void setOperation(UserOperation _operation){ this->operation = _operation;}
         void setPayload(string _payload){ this->payload = _payload;}
 
     private:    
-        char operation;
+        UserOperation operation;
         string payload;
 };
 
@@ -31,14 +50,14 @@ Interface between Dictionary and User Interface. This DTO definition should be g
 class QueryResultDTO{
 
     public:
-        int getKey(){return this->key;}
+        string getKey(){return this->key;}
         string getValue(){return this->value;}
 
         void setKey(int _key){ this->value = _key;}
         void setValue(string _value){ this->value = _value;}
 
     private:    
-        int key;
+        string key;
         string value;
 };
 
@@ -59,8 +78,10 @@ class Parser{
         UserCommandDTO user_command;
         string keyword;
         string payload;
-        void SetParseError();   
-
+        void SetParseError();
+        void NoArgCheck(string _entry){ if(_entry.size()>3) cout <<endl <<"operation " <<keyword << " must have no arguments";}
+        string ParseFilename(string); 
+        
 };
 
 
@@ -73,7 +94,7 @@ Encapsulates Dictonary Services Client Logic.
 class DictServiceInvoker{
 
     public:
-        int ExecuteDictQuerry(QueryResultDTO&, UserCommandDTO);
+        int ExecuteUserCommand(QueryResultDTO&, UserCommandDTO, PerformanceReporter &);
 
 };
 
@@ -88,14 +109,20 @@ Enables main User Interface method GetUserCommand. Presents prompt, parses input
 class CommandLine{
 
     public:
-        int GetUserCommand();
+        int ProcessUserCommand();
 
     private:
         Parser parser;
         string _input;
+        QueryResultDTO query_result;
         UserCommandDTO user_command;
+        DictServiceInvoker invoker;
+        PerformanceReporter performance_reporter;
 
-        void PromptEntry();
+        void PromptEntry(){cout <<endl <<"[Paralel_Dictionary] Enter Command: ";};
         string GetInput();
   
 };
+
+
+#endif
