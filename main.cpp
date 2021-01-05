@@ -27,7 +27,7 @@ CommandLine commandLine;
 
 //performance_reporter.show_time_report();
 
-commandLine.ProcessUserCommand();
+commandLine.ProcessUserCommands();
 
 
 

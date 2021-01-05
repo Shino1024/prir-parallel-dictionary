@@ -9,7 +9,9 @@ add_executable(prir_parallel_dictionary main.cpp
                                         parallel/finder.cpp
                                         utils/benchmark.cpp
                                         utils/file.cpp
-                                        utils/serialization.cpp)
+                                        utils/serialization.cpp
+                                        performance_reporter.cpp
+                                        command_line.cpp)
 
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND)

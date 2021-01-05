@@ -4,9 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/command_line.cpp" "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o"
   "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/dictionary/dictionary.cpp" "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir/dictionary/dictionary.cpp.o"
   "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/main.cpp" "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir/main.cpp.o"
   "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/parallel/finder.cpp" "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir/parallel/finder.cpp.o"
+  "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/performance_reporter.cpp" "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o"
   "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/utils/benchmark.cpp" "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir/utils/benchmark.cpp.o"
   "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/utils/file.cpp" "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir/utils/file.cpp.o"
   "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/utils/serialization.cpp" "/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir/utils/serialization.cpp.o"

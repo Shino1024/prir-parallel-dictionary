@@ -1,7 +1,9 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o"
   "CMakeFiles/prir_parallel_dictionary.dir/dictionary/dictionary.cpp.o"
   "CMakeFiles/prir_parallel_dictionary.dir/main.cpp.o"
   "CMakeFiles/prir_parallel_dictionary.dir/parallel/finder.cpp.o"
+  "CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o"
   "CMakeFiles/prir_parallel_dictionary.dir/utils/benchmark.cpp.o"
   "CMakeFiles/prir_parallel_dictionary.dir/utils/file.cpp.o"
   "CMakeFiles/prir_parallel_dictionary.dir/utils/serialization.cpp.o"

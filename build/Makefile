@@ -136,6 +136,33 @@ prir_parallel_dictionary/fast:
 	$(MAKE) -f CMakeFiles/prir_parallel_dictionary.dir/build.make CMakeFiles/prir_parallel_dictionary.dir/build
 .PHONY : prir_parallel_dictionary/fast
 
+command_line.o: command_line.cpp.o
+
+.PHONY : command_line.o
+
+# target to build an object file
+command_line.cpp.o:
+	$(MAKE) -f CMakeFiles/prir_parallel_dictionary.dir/build.make CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o
+.PHONY : command_line.cpp.o
+
+command_line.i: command_line.cpp.i
+
+.PHONY : command_line.i
+
+# target to preprocess a source file
+command_line.cpp.i:
+	$(MAKE) -f CMakeFiles/prir_parallel_dictionary.dir/build.make CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.i
+.PHONY : command_line.cpp.i
+
+command_line.s: command_line.cpp.s
+
+.PHONY : command_line.s
+
+# target to generate assembly for a file
+command_line.cpp.s:
+	$(MAKE) -f CMakeFiles/prir_parallel_dictionary.dir/build.make CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.s
+.PHONY : command_line.cpp.s
+
 dictionary/dictionary.o: dictionary/dictionary.cpp.o
 
 .PHONY : dictionary/dictionary.o
@@ -222,6 +249,33 @@ parallel/finder.cpp.s:
 	$(MAKE) -f CMakeFiles/prir_parallel_dictionary_test.dir/build.make CMakeFiles/prir_parallel_dictionary_test.dir/parallel/finder.cpp.s
 	$(MAKE) -f CMakeFiles/prir_parallel_dictionary.dir/build.make CMakeFiles/prir_parallel_dictionary.dir/parallel/finder.cpp.s
 .PHONY : parallel/finder.cpp.s
+
+performance_reporter.o: performance_reporter.cpp.o
+
+.PHONY : performance_reporter.o
+
+# target to build an object file
+performance_reporter.cpp.o:
+	$(MAKE) -f CMakeFiles/prir_parallel_dictionary.dir/build.make CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o
+.PHONY : performance_reporter.cpp.o
+
+performance_reporter.i: performance_reporter.cpp.i
+
+.PHONY : performance_reporter.i
+
+# target to preprocess a source file
+performance_reporter.cpp.i:
+	$(MAKE) -f CMakeFiles/prir_parallel_dictionary.dir/build.make CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.i
+.PHONY : performance_reporter.cpp.i
+
+performance_reporter.s: performance_reporter.cpp.s
+
+.PHONY : performance_reporter.s
+
+# target to generate assembly for a file
+performance_reporter.cpp.s:
+	$(MAKE) -f CMakeFiles/prir_parallel_dictionary.dir/build.make CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.s
+.PHONY : performance_reporter.cpp.s
 
 testing/benchmark_test.o: testing/benchmark_test.cpp.o
 
@@ -485,6 +539,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... prir_parallel_dictionary_test"
 	@echo "... prir_parallel_dictionary"
+	@echo "... command_line.o"
+	@echo "... command_line.i"
+	@echo "... command_line.s"
 	@echo "... dictionary/dictionary.o"
 	@echo "... dictionary/dictionary.i"
 	@echo "... dictionary/dictionary.s"
@@ -494,6 +551,9 @@ help:
 	@echo "... parallel/finder.o"
 	@echo "... parallel/finder.i"
 	@echo "... parallel/finder.s"
+	@echo "... performance_reporter.o"
+	@echo "... performance_reporter.i"
+	@echo "... performance_reporter.s"
 	@echo "... testing/benchmark_test.o"
 	@echo "... testing/benchmark_test.i"
 	@echo "... testing/benchmark_test.s"

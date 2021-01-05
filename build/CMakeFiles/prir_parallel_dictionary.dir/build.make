@@ -135,6 +135,32 @@ CMakeFiles/prir_parallel_dictionary.dir/utils/serialization.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/prir_parallel_dictionary.dir/utils/serialization.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/utils/serialization.cpp -o CMakeFiles/prir_parallel_dictionary.dir/utils/serialization.cpp.s
 
+CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o: CMakeFiles/prir_parallel_dictionary.dir/flags.make
+CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o: ../performance_reporter.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o -c /home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/performance_reporter.cpp
+
+CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/performance_reporter.cpp > CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.i
+
+CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/performance_reporter.cpp -o CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.s
+
+CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o: CMakeFiles/prir_parallel_dictionary.dir/flags.make
+CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o: ../command_line.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o -c /home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/command_line.cpp
+
+CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/command_line.cpp > CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.i
+
+CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/command_line.cpp -o CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.s
+
 # Object files for target prir_parallel_dictionary
 prir_parallel_dictionary_OBJECTS = \
 "CMakeFiles/prir_parallel_dictionary.dir/main.cpp.o" \
@@ -142,7 +168,9 @@ prir_parallel_dictionary_OBJECTS = \
 "CMakeFiles/prir_parallel_dictionary.dir/parallel/finder.cpp.o" \
 "CMakeFiles/prir_parallel_dictionary.dir/utils/benchmark.cpp.o" \
 "CMakeFiles/prir_parallel_dictionary.dir/utils/file.cpp.o" \
-"CMakeFiles/prir_parallel_dictionary.dir/utils/serialization.cpp.o"
+"CMakeFiles/prir_parallel_dictionary.dir/utils/serialization.cpp.o" \
+"CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o" \
+"CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o"
 
 # External object files for target prir_parallel_dictionary
 prir_parallel_dictionary_EXTERNAL_OBJECTS =
@@ -153,11 +181,13 @@ prir_parallel_dictionary: CMakeFiles/prir_parallel_dictionary.dir/parallel/finde
 prir_parallel_dictionary: CMakeFiles/prir_parallel_dictionary.dir/utils/benchmark.cpp.o
 prir_parallel_dictionary: CMakeFiles/prir_parallel_dictionary.dir/utils/file.cpp.o
 prir_parallel_dictionary: CMakeFiles/prir_parallel_dictionary.dir/utils/serialization.cpp.o
+prir_parallel_dictionary: CMakeFiles/prir_parallel_dictionary.dir/performance_reporter.cpp.o
+prir_parallel_dictionary: CMakeFiles/prir_parallel_dictionary.dir/command_line.cpp.o
 prir_parallel_dictionary: CMakeFiles/prir_parallel_dictionary.dir/build.make
 prir_parallel_dictionary: /usr/lib/gcc/x86_64-linux-gnu/9/libgomp.so
 prir_parallel_dictionary: /usr/lib/x86_64-linux-gnu/libpthread.so
 prir_parallel_dictionary: CMakeFiles/prir_parallel_dictionary.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable prir_parallel_dictionary"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking CXX executable prir_parallel_dictionary"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/prir_parallel_dictionary.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

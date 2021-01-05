@@ -1,5 +1,11 @@
 #include <iostream>
 #include "performance_reporter.h"
+#include <bits/stdc++.h>
+#include <utils/file.h>
+#include <vector>
+#include <dictionary/dictionary.h>
+#include <utils/serialization.h>
+
 
 using namespace std;
 
@@ -8,16 +14,16 @@ using namespace std;
 
 
 enum UserOperation{
-    fnd,
-    del,
-    put,
-    ini,
-    res,
-    exs,
-    exn,
-    sav,
-    upd,
-    unknown
+    find_entry,
+    delete_entry,
+    put_entry,
+    init,
+    reset,
+    save_and_exit,
+    exit_program,
+    save,
+    update_entry,
+    unknown,
 };
 
 
@@ -79,8 +85,9 @@ class Parser{
         string keyword;
         string payload;
         void SetParseError();
-        void NoArgCheck(string _entry){ if(_entry.size()>3) cout <<endl <<"operation " <<keyword << " must have no arguments";}
-        string ParseFilename(string); 
+        static void NoArgCheck(string, string);
+        static string ParseFilename(string); 
+        static string ExtractPayload(string _entry, string _keyword){return _entry.substr(_keyword.size()+1,_entry.size()-_keyword.size());};
         
 };
 
@@ -93,8 +100,12 @@ Encapsulates Dictonary Services Client Logic.
 
 class DictServiceInvoker{
 
+    
     public:
         int ExecuteUserCommand(DictQueryDTO&, UserCommandDTO, PerformanceReporter &);
+    private:
+        dictionary::Dictionary dictionary;
+        static int InitDictionaryFromFile(string);
 
 };
 
@@ -109,7 +120,7 @@ Enables main User Interface method GetUserCommand. Presents prompt, parses input
 class CommandLine{
 
     public:
-        int ProcessUserCommand();
+        int ProcessUserCommands();
 
     private:
         Parser parser;
