@@ -19,7 +19,7 @@ class PerformanceReporter{
         void show_time_report();
         
     private:
-    
+        bool mid_measurements;
         chrono::time_point<system_clock> t1; //beginning of the processing
         chrono::time_point<system_clock> t2; //just before pararrell processing
         chrono::time_point<system_clock> t3; //just after pararrell processing

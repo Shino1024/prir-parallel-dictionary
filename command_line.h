@@ -59,7 +59,7 @@ class DictQueryDTO{
         string getKey(){return this->key;}
         string getValue(){return this->value;}
 
-        void setKey(int _key){ this->value = _key;}
+        void setKey(string _key){this->key = _key;}
         void setValue(string _value){ this->value = _value;}
 
     private:    
@@ -79,6 +79,7 @@ class Parser{
      
     public:
         UserCommandDTO ParseUserEntry(string);
+        static DictQueryDTO ParseDictionaryEntry(string _entry);
 
     private:
         UserCommandDTO user_command;
@@ -103,9 +104,11 @@ class DictServiceInvoker{
     
     public:
         int ExecuteUserCommand(DictQueryDTO&, UserCommandDTO, PerformanceReporter &);
+        int InitDictionaryFromFile(string);
+        int SaveDictionary();
+        int PutDictionaryEntry(DictQueryDTO);
     private:
         dictionary::Dictionary dictionary;
-        static int InitDictionaryFromFile(string);
 
 };
 

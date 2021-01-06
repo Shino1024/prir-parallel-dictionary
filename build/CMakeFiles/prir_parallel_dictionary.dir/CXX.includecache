@@ -52,6 +52,22 @@ dictionary/dictionary.h
 utils/serialization.h
 -
 
+/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/main.cpp
+omp.h
+-
+stdio.h
+-
+stdlib.h
+-
+command_line.h
+/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/command_line.h
+
+/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/performance_reporter.cpp
+iostream
+-
+performance_reporter.h
+/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/performance_reporter.h
+
 /home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/performance_reporter.h
 chrono
 -

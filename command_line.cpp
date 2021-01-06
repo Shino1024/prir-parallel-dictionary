@@ -1,12 +1,15 @@
 #include "command_line.h"
+#define SNAPSHOT_FILENAME "dictionary_snapshot.csv"
+
 
 
 UserCommandDTO Parser::ParseUserEntry(string _entry){
 
     stringstream iss(_entry);
     iss >> keyword;
-    
-    if (keyword == "reset"){ user_command.setOperation(find_entry); Parser::NoArgCheck(_entry,keyword);}
+    user_command.setPayload("");
+
+    if (keyword == "reset"){ user_command.setOperation(reset); Parser::NoArgCheck(_entry,keyword);}
     else if (keyword == "save") { user_command.setOperation(save); Parser::NoArgCheck(_entry,keyword);}
     else if (keyword == "saveexit") { user_command.setOperation(save_and_exit); Parser::NoArgCheck(_entry,keyword);}
     else if (keyword == "exit") { user_command.setOperation(exit_program); Parser::NoArgCheck(_entry,keyword);}
@@ -21,19 +24,22 @@ UserCommandDTO Parser::ParseUserEntry(string _entry){
         else if (keyword == "put") {user_command.setOperation(put_entry);}
         else if (keyword == "delete") {user_command.setOperation(delete_entry);}
         else if (keyword == "update") {user_command.setOperation(update_entry);}
-        else { 
+        else {
             SetParseError();
             return user_command;
         }
 
-        if(_entry.substr(keyword.size(),1)!=" "){
-            cout<< endl <<"Space required after keyword";
+        payload = Parser::ExtractPayload(_entry, keyword);
+
+        if(payload.size()<1){
             SetParseError();
+            cout<<"[ERROR]: Argument required!";
             return user_command;
         }
-        payload = Parser::ExtractPayload(_entry, keyword);
+        
         user_command.setPayload(payload);
     }
+    
     return user_command;
 }
 
@@ -56,6 +62,25 @@ string Parser::ParseFilename(string _entry){
 
 }; 
 
+DictQueryDTO Parser::ParseDictionaryEntry(string _entry){
+    DictQueryDTO query;
+    string key;        
+    stringstream iss(_entry);
+
+    iss >> key;
+
+    
+    query.setKey(key);
+    query.setValue(Parser::ExtractPayload(_entry,key));
+    
+    cout <<endl <<"[ParseDictionaryEntry] Key: "<<query.getKey() <<" Value: " <<query.getValue();
+
+    return query;
+
+}; 
+
+
+
 void Parser::NoArgCheck(string _entry, string _keyword){
     if(_entry.size()>_keyword.size()) cout <<endl <<"[Warnnig] Operation " <<_keyword << " must have no arguments. Arguments ignored";
 
@@ -65,32 +90,62 @@ void Parser::NoArgCheck(string _entry, string _keyword){
 
 int DictServiceInvoker::ExecuteUserCommand(DictQueryDTO& _result, UserCommandDTO _user_command, PerformanceReporter & _performance_reporter){
     
-    std::pair<std::string, dictionary::DictionaryError> search_result;
+    //std::pair<std::string, dictionary::DictionaryError> search_result;
 
     switch (_user_command.getOperation())
     {
         case find_entry:
-            cout <<endl <<"operation find - not yet implemented";
-            search_result = dictionary.find(_user_command.getPayload());
-            cout <<endl <<"Result: " <<search_result.first <<endl;
-            break;
+            {
+                cout <<endl <<"operation find";
+                _performance_reporter.logTime(PerformanceReporter::cp_2);
+                auto search_result = dictionary.find(_user_command.getPayload());
+                _performance_reporter.logTime(PerformanceReporter::cp_3);
+                cout <<endl <<"Result: " <<search_result.first <<endl;
+                break;
+            }
         case put_entry:
-            cout <<endl <<"operation put - not yet implemented";
-            break;
+            {
+                cout <<endl <<"operation put";
+                auto query = Parser::ParseDictionaryEntry(_user_command.getPayload());
+                PutDictionaryEntry(query);
+
+                break;
+            }
+        case delete_entry:
+            {
+                cout <<endl <<"operation delete";
+                if(dictionary.remove(_user_command.getPayload())== dictionary::DictionaryError::NonexistentKeyError)
+                    cout <<endl <<"ERROR: Key not found\n";
+                break;
+            }
+
+        case update_entry:
+            {
+                cout <<endl <<"operation update";
+                auto query = Parser::ParseDictionaryEntry(_user_command.getPayload());
+                if(dictionary.update(query.getKey(), query.getValue())== dictionary::DictionaryError::NonexistentKeyError)
+                    cout <<endl <<"ERROR: Key not found\n";
+                break;
+            }
+        
         case reset:
-            cout <<endl <<"operation reset dictionary - not yet implemented";
+            cout <<endl <<"operation reset dictionary";
+            dictionary.clear();
+
             break;
         case save_and_exit:
-            cout <<endl <<"operation exit and save - not yet implemented";
-            break;
+            cout <<endl <<"operation exit and save\n";
+            SaveDictionary();
+            return 1;
         case exit_program:
-            cout <<endl <<"operation exit no save";
+            cout <<endl <<"operation exit without saving\n";
             return 1;
          case save:
-            cout <<endl <<"operation save - not yet implemented";
+            cout <<endl <<"operation save\n";
+            SaveDictionary();
             break;
         case init:
-            cout <<endl <<"operation init from file - not yet implemented; filename: " <<_user_command.getPayload() <<endl;
+            cout <<endl <<"operation init from file; filename: "; //<<_user_command.getPayload() <<endl;
             DictServiceInvoker::InitDictionaryFromFile(_user_command.getPayload());
             
             break;
@@ -115,34 +170,63 @@ int DictServiceInvoker::InitDictionaryFromFile(string _filename){
 
     bool deserialization_result = dict_deserializer.deserialize();
     if (!deserialization_result) {
+        cout <<endl <<"[ERROR]:Initialization from file failed\n";
         return 1;
     }
 
-    dictionary::Dictionary dictionary{dict_deserializer.get_dictionary()};
-    
-
+    this->dictionary = dict_deserializer.get_dictionary();
 
     return 0;
+}
+
+int DictServiceInvoker::PutDictionaryEntry(DictQueryDTO _query){
+    if(this->dictionary.insert(_query.getKey(), _query.getValue()) == dictionary::DictionaryError::AlreadyExistingKeyError){
+        cout <<endl <<"ERROR: Key already exist\n";
+        return 1;
+    }
+    return 0;
+   
+};
+
+int DictServiceInvoker::SaveDictionary(){
+    serialization::DictSerializer dict_serializer{this->dictionary};
+    dict_serializer.serialize();
+    const std::string serialized_dictionary_data{dict_serializer.get_data()};
+
+    const std::string file_filename{SNAPSHOT_FILENAME};
+
+    file::FileWriter mock_file_writer{file_filename};
+
+   
+    mock_file_writer.set_buffer(serialized_dictionary_data);
+    bool write_file_result = mock_file_writer.write_file();
+    
+    return 0;
+
 
 }
+
 
 
 int CommandLine::ProcessUserCommands(){  
     
     int exit_flag = 0;
 
+    
+    invoker.InitDictionaryFromFile(SNAPSHOT_FILENAME);
+
     do{
         PromptEntry();
         _input = GetInput();
-        //performance_reporter.logTime(PerformanceReporter::cp_1);
+        performance_reporter.logTime(PerformanceReporter::cp_1);
 
         user_command = parser.ParseUserEntry(_input);
         cout <<endl <<"Command entered:" <<user_command.getOperation() <<" " <<user_command.getPayload() <<endl;
 
         exit_flag = invoker.ExecuteUserCommand(query_result, user_command, performance_reporter);
 
-        //performance_reporter.logTime(PerformanceReporter::cp_4);
-        //performance_reporter.show_time_report();
+        performance_reporter.logTime(PerformanceReporter::cp_4);
+        performance_reporter.show_time_report();
     }while(exit_flag == 0);
     return 0;
 }
