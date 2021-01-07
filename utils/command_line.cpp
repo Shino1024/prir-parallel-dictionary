@@ -30,13 +30,14 @@ UserCommandDTO Parser::ParseUserEntry(string _entry){
             return user_command;
         }
 
-        payload = Parser::ExtractPayload(_entry, keyword);
+        
 
-        if(payload.size()<1){
+        if(_entry.size()==keyword.size()){
             SetParseError();
             cout<<"[ERROR]: Argument required!";
             return user_command;
         }
+        payload = Parser::ExtractPayload(_entry, keyword);
         
         user_command.setPayload(payload);
     }
@@ -80,7 +81,44 @@ DictQueryDTO Parser::ParseDictionaryEntry(string _entry){
 
 }; 
 
+int Parser::ExtractNumber(string _entry){
 
+    DictQueryDTO query;
+    string key;        
+    string _number_string;
+    int _number;
+    stringstream iss(_entry);
+
+    iss >> key;
+
+    try{
+    iss >> _number_string;
+
+    cout <<endl <<"Number of threads entered: " << _number_string <<endl;
+ 
+    _number = std::stoi(_number_string);
+    }catch(exception &err)
+    {
+        cout <<endl <<"Incorrect entry. Enter number of threads after searched key";
+        return 0;
+
+    }
+
+    return _number;
+
+
+};
+
+string Parser::ExtractWord(string _entry){
+
+    DictQueryDTO query;
+    string word;        
+    stringstream iss(_entry);
+
+    iss >> word;
+
+    return word;
+};
 
 void Parser::NoArgCheck(string _entry, string _keyword){
     if(_entry.size()>_keyword.size()) cout <<endl <<"[Warnnig] Operation " <<_keyword << " must have no arguments. Arguments ignored";
@@ -99,7 +137,7 @@ int DictServiceInvoker::ExecuteUserCommand(DictQueryDTO& _result, UserCommandDTO
             {
                 cout <<endl <<"operation find";
                 _performance_reporter.logTime(PerformanceReporter::cp_2);
-                auto search_result = dictionary.find(_user_command.getPayload());
+                auto search_result = dictionary.find(Parser::ExtractWord(_user_command.getPayload()));
                 _performance_reporter.logTime(PerformanceReporter::cp_3);
                 if(search_result.second == dictionary::DictionaryError::NonexistentKeyError)
                     cout <<endl <<"Key not found\n";
@@ -107,15 +145,17 @@ int DictServiceInvoker::ExecuteUserCommand(DictQueryDTO& _result, UserCommandDTO
                 break;
             }
         case parallel_find_entry:
-            {
-                cout <<endl <<"operation parallel find. Searching for key: " <<_user_command.getPayload();
-                _performance_reporter.logTime(PerformanceReporter::cp_2);
-                auto search_result = finder.parallel_find(this->dictionary, _user_command.getPayload(), 3);
-                //auto search_result = dictionary.find(_user_command.getPayload());
-                _performance_reporter.logTime(PerformanceReporter::cp_3);
-                if(!search_result.second)
-                    cout <<endl <<"Key not found\n";
-                else cout <<endl <<"Result: " <<search_result.first <<endl;
+            {   if(Parser::ExtractNumber(_user_command.getPayload())){
+                    cout <<endl <<"operation parallel find. Searching for key: " <<_user_command.getPayload();
+                
+                    _performance_reporter.logTime(PerformanceReporter::cp_2);
+                    auto search_result = finder.parallel_find(this->dictionary, Parser::ExtractWord(_user_command.getPayload()), Parser::ExtractNumber(_user_command.getPayload()));
+                
+                    _performance_reporter.logTime(PerformanceReporter::cp_3);
+                    if(!search_result.second)
+                     cout <<endl <<"Key not found\n";
+                    else cout <<endl <<"Result: " <<search_result.first <<endl;
+                }
                 break;
             }
         case put_entry:
@@ -129,7 +169,7 @@ int DictServiceInvoker::ExecuteUserCommand(DictQueryDTO& _result, UserCommandDTO
         case delete_entry:
             {
                 cout <<endl <<"operation delete";
-                if(dictionary.remove(_user_command.getPayload())== dictionary::DictionaryError::NonexistentKeyError)
+                if(dictionary.remove(Parser::ExtractWord(_user_command.getPayload()))== dictionary::DictionaryError::NonexistentKeyError)
                     cout <<endl <<"ERROR: Key not found\n";
                 break;
             }

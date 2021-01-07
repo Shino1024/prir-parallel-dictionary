@@ -58,9 +58,10 @@ class DictQueryDTO {
     public:
         string getKey(){return this->key;}
         string getValue(){return this->value;}
-
+        
         void setKey(string _key){this->key = _key;}
         void setValue(string _value){ this->value = _value;}
+        
 
     private:    
         string key;
@@ -80,6 +81,8 @@ class Parser {
     public:
         UserCommandDTO ParseUserEntry(string);
         static DictQueryDTO ParseDictionaryEntry(string _entry);
+        static int ExtractNumber(string _entry);
+        static string ExtractWord(string _entry);
 
     private:
         UserCommandDTO user_command;
