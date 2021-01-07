@@ -1,4 +1,5 @@
 #include <streambuf>
+#include <filesystem>
 #include <fstream>
 
 #include "file.h"
@@ -10,6 +11,10 @@ namespace file {
 
     bool FileReader::read_file() {
         if (this->file_name == "") {
+            return false;
+        }
+
+        if (!std::filesystem::exists(this->file_name)) {
             return false;
         }
 
