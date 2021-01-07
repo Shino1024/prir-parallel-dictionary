@@ -8,11 +8,13 @@
 #include <vector>
 #include <dictionary/dictionary.h>
 #include <utils/serialization.h>
+#include <parallel/finder.h>
 
 using namespace std;
 
 enum UserOperation{
     find_entry,
+    parallel_find_entry,
     delete_entry,
     put_entry,
     init,
@@ -107,6 +109,7 @@ class DictServiceInvoker {
         int PutDictionaryEntry(DictQueryDTO);
     private:
         dictionary::Dictionary dictionary;
+        parallel::Finder finder{dictionary};
 
 };
 

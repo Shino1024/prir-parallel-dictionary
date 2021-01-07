@@ -21,6 +21,7 @@ UserCommandDTO Parser::ParseUserEntry(string _entry){
             return user_command;
         }
         else if (keyword == "find") {user_command.setOperation(find_entry);}
+        else if (keyword == "pfind") {user_command.setOperation(parallel_find_entry);}
         else if (keyword == "put") {user_command.setOperation(put_entry);}
         else if (keyword == "delete") {user_command.setOperation(delete_entry);}
         else if (keyword == "update") {user_command.setOperation(update_entry);}
@@ -101,7 +102,19 @@ int DictServiceInvoker::ExecuteUserCommand(DictQueryDTO& _result, UserCommandDTO
                 auto search_result = dictionary.find(_user_command.getPayload());
                 _performance_reporter.logTime(PerformanceReporter::cp_3);
                 if(search_result.second == dictionary::DictionaryError::NonexistentKeyError)
-                    cout <<endl <<"ERROR: Key not found\n";
+                    cout <<endl <<"Key not found\n";
+                else cout <<endl <<"Result: " <<search_result.first <<endl;
+                break;
+            }
+        case parallel_find_entry:
+            {
+                cout <<endl <<"operation parallel find. Searching for key: " <<_user_command.getPayload();
+                _performance_reporter.logTime(PerformanceReporter::cp_2);
+                auto search_result = finder.parallel_find(_user_command.getPayload(),2);
+                //auto search_result = dictionary.find(_user_command.getPayload());
+                _performance_reporter.logTime(PerformanceReporter::cp_3);
+                if(!search_result.second)
+                    cout <<endl <<"Key not found\n";
                 else cout <<endl <<"Result: " <<search_result.first <<endl;
                 break;
             }

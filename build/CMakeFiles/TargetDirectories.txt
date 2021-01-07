@@ -1,0 +1,4 @@
+/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/rebuild_cache.dir
+/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/edit_cache.dir
+/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary_test.dir
+/home/mw/Desktop/prir-dictionary/prir-parallel-dictionary/build/CMakeFiles/prir_parallel_dictionary.dir
