@@ -28,17 +28,11 @@ namespace parallel {
                     for (unsigned int i = 0; i < dictionary_index; ++i) {
                         ++dictionary_iterator;
                     }
-                    for (const auto &[k, v] : dictionary_cache) {
-                        std::cout << "TID: " << omp_get_thread_num() << ", di: " << dictionary_index << ", k: " << k << ", v: " << v << std::endl;
-                    }
-            std::cout << std::endl << "size in parallel find: " << dictionary_cache.size() << ", di: " << dictionary_index << std::endl;
                     loop_ready = true;
                 }
-                std::cout << "Thread ID: " << omp_get_thread_num() << ", index: " << dictionary_index << std::endl;
                 if (search_key == dictionary_iterator->first) {
                     #pragma omp critical
                     {
-                        std::cout << "FOUND" << std::endl;
                         search_result = std::make_pair(dictionary_iterator->second, true);
                     }
                 }
