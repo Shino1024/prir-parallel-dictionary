@@ -1,3 +1,6 @@
+#ifndef PRIR_COMMAND_LINE
+#define PRIR_COMMAND_LINE
+
 #include <iostream>
 #include "performance_reporter.h"
 #include <bits/stdc++.h>
@@ -6,12 +9,7 @@
 #include <dictionary/dictionary.h>
 #include <utils/serialization.h>
 
-
 using namespace std;
-
-#ifndef COMMAND_LINE
-#define COMMAND_LINE
-
 
 enum UserOperation{
     find_entry,
@@ -35,7 +33,7 @@ Class represents DTO used for calling Dictionary Services. Consists of two eleme
 # payload - searched string or dictionary entry to be inserted
 */
 
-class UserCommandDTO{
+class UserCommandDTO {
 
     public:
         UserOperation getOperation(){return this->operation;}
@@ -53,7 +51,7 @@ class UserCommandDTO{
 Interface between Dictionary and User Interface. This DTO definition should be global.
 */
 
-class DictQueryDTO{
+class DictQueryDTO {
 
     public:
         string getKey(){return this->key;}
@@ -75,7 +73,7 @@ TBD: Exception handling, space truncating etc.
 
 */
 
-class Parser{
+class Parser {
      
     public:
         UserCommandDTO ParseUserEntry(string);
@@ -99,7 +97,7 @@ Encapsulates Dictonary Services Client Logic.
 
 */
 
-class DictServiceInvoker{
+class DictServiceInvoker {
 
     
     public:
@@ -120,7 +118,7 @@ Enables main User Interface method GetUserCommand. Presents prompt, parses input
 
 */
 
-class CommandLine{
+class CommandLine {
 
     public:
         int ProcessUserCommands();
@@ -138,5 +136,4 @@ class CommandLine{
   
 };
 
-
-#endif
+#endif // PRIR_COMMAND_LINE

@@ -9,9 +9,7 @@
 #include <utils/file.h>
 #include <utils/report_creation.h>
 #include <utils/serialization.h>
-
-#include "command_line.h"
-
+#include <utils/command_line.h>
 
 int main(int argc, char *argv[]) {
     // dictionary::Dictionary d{};

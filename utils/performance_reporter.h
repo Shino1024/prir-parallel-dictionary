@@ -1,17 +1,14 @@
+#ifndef PRIR_PERFORMANCE_REPORTER
+#define PRIR_PERFORMANCE_REPORTER
+
 #include <chrono>
 #include <iostream>
 #include <unistd.h>
 
-#ifndef PERFORMANCE_REPORTER
-#define PERFORMANCE_REPORTER
-
 using namespace std;
 using namespace std::chrono;
 
-
-
-class PerformanceReporter{
-
+class PerformanceReporter {
     public:
         enum checkpoint{cp_1,cp_2,cp_3,cp_4};
         
@@ -27,6 +24,4 @@ class PerformanceReporter{
 
 };
 
-
-
-#endif
+#endif // PRIR_PERFORMANCE_REPORTER

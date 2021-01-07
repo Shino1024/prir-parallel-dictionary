@@ -1,6 +1,6 @@
-#include <iostream>
-#include "performance_reporter.h"
+#include <utils/performance_reporter.h>
 
+#include <iostream>
 void PerformanceReporter::logTime(checkpoint _checkpoint)
 {
 

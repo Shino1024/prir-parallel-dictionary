@@ -10,8 +10,8 @@ add_executable(prir_parallel_dictionary main.cpp
                                         utils/benchmark.cpp
                                         utils/file.cpp
                                         utils/serialization.cpp
-                                        performance_reporter.cpp
-                                        command_line.cpp)
+                                        utils/performance_reporter.cpp
+                                        utils/command_line.cpp)
 
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND)
@@ -28,6 +28,8 @@ add_executable(prir_parallel_dictionary_test dictionary/dictionary.cpp
                                              utils/benchmark.cpp
                                              utils/file.cpp
                                              utils/serialization.cpp
+                                             utils/command_line.cpp
+                                             utils/performance_reporter.cpp
                                              testing/main_test.cpp
                                              testing/benchmark_test.cpp
                                              testing/dictionary_test.cpp
