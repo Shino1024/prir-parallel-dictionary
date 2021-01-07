@@ -41,7 +41,7 @@ void PerformanceReporter::show_time_report()
             << " ns" << endl;
     
     }
-            cout << "Total time Elapsed time in nanoseconds : "
-            << chrono::duration_cast<chrono::nanoseconds>(t4 - t1).count()
-            << " ns" << endl;
+    cout << "Total time Elapsed time in nanoseconds : "
+    << chrono::duration_cast<chrono::nanoseconds>(t4 - t1).count()
+    << " ns" << endl;
 }

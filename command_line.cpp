@@ -100,7 +100,9 @@ int DictServiceInvoker::ExecuteUserCommand(DictQueryDTO& _result, UserCommandDTO
                 _performance_reporter.logTime(PerformanceReporter::cp_2);
                 auto search_result = dictionary.find(_user_command.getPayload());
                 _performance_reporter.logTime(PerformanceReporter::cp_3);
-                cout <<endl <<"Result: " <<search_result.first <<endl;
+                if(search_result.second == dictionary::DictionaryError::NonexistentKeyError)
+                    cout <<endl <<"ERROR: Key not found\n";
+                else cout <<endl <<"Result: " <<search_result.first <<endl;
                 break;
             }
         case put_entry:
@@ -164,7 +166,7 @@ int DictServiceInvoker::InitDictionaryFromFile(string _filename){
     bool read_file_result = file_reader.read_file();
     const auto read_data = file_reader.get_buffer();
     
-    cout <<endl <<"InitFromFile data:\n"<<read_data <<endl;
+    //cout <<endl <<"InitFromFile data:\n"<<read_data <<endl;
 
     serialization::DictDeserializer dict_deserializer{read_data};
 
