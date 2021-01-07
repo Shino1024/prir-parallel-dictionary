@@ -11,7 +11,6 @@ namespace parallel {
         std::pair<std::string, bool> parallel_find(const dictionary::Dictionary &dictionary, const std::string &search_key, const unsigned int num_threads);
 
         private:
-        dictionary::Dictionary dictionary;
     };
 }
 
