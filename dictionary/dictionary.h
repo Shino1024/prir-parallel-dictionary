@@ -19,13 +19,15 @@ namespace dictionary {
 
     public:
         Dictionary();
+        Dictionary(const dictionary::Dictionary &dictionary);
+        // Dictionary(const dictionary::Dictionary &dictionary) = default;
         DictionaryError insert(const std::string &key, const std::string &value);
         DictionaryError update(const std::string &key, const std::string &value);
         DictionaryError remove(const std::string &key);
         std::pair<std::string, DictionaryError> find(const std::string &key);
         void clear();
 
-        const std::map<std::string, std::string> & get_cache() const;
+        const std::map<std::string, std::string> get_cache() const;
     };
 }
 
