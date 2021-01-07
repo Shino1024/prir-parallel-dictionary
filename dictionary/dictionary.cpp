@@ -11,6 +11,10 @@ namespace dictionary {
         //
     }
 
+    Dictionary::Dictionary(const dictionary::Dictionary &dictionary) : cache{dictionary.get_cache()} {
+        //
+    }
+
     DictionaryError Dictionary::insert(const std::string &key, const std::string &value) {
         if (this->cache.find(key) != this->cache.end()) {
             return DictionaryError::AlreadyExistingKeyError;
@@ -53,7 +57,7 @@ namespace dictionary {
         this->cache.clear();
     }
 
-    const std::map<std::string, std::string> & Dictionary::get_cache() const {
+    const std::map<std::string, std::string> Dictionary::get_cache() const {
         return this->cache;
     }
 }

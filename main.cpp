@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     d.insert("j", "3");
     d.insert("t", "6");
     parallel::Finder f{d};
-    const auto r = f.parallel_find("t", 4);
-    std::cout << r.second << std::endl;
+    const auto r = f.parallel_find("j", 5);
+    std::cout << r.first << std::endl;
     return 0;
 }

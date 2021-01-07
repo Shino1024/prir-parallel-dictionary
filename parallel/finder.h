@@ -6,12 +6,12 @@
 namespace parallel {
     class Finder {
         public:
-        Finder(const dictionary::Dictionary &dictionary);
+        Finder(dictionary::Dictionary dictionary);
 
         std::pair<std::string, bool> parallel_find(const std::string &search_key, const unsigned int num_threads);
 
         private:
-        dictionary::Dictionary dictionary{};
+        dictionary::Dictionary dictionary;
     };
 }
 
