@@ -9,9 +9,18 @@ Compile and run with:
 `chmod u+x ./build_and_run.sh`
 `./build_and_run.sh`
 
-update:
-`g++ -fopenmp  main.cc command_line.cc -o test`
+Sample CSVs in the `assets/` directory.
 
-
-Run with:
-`./test`
+Available commands:
+```
+reset
+save
+saveexit
+find <key>
+pfind <key> <threads_num>
+init <file_name>
+put <key> <value>
+delete <key>
+update <key> <value>
+exit
+```
