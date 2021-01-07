@@ -4,5 +4,9 @@ A project for WUT Polish technical university's Computer Science course about pa
 Compile with:
 `gcc -fopenmp test.c -o test`
 
+update:
+`g++ -fopenmp  main.cc command_line.cc -o test`
+
+
 Run with:
 `./test`
