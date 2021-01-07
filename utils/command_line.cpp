@@ -110,7 +110,7 @@ int DictServiceInvoker::ExecuteUserCommand(DictQueryDTO& _result, UserCommandDTO
             {
                 cout <<endl <<"operation parallel find. Searching for key: " <<_user_command.getPayload();
                 _performance_reporter.logTime(PerformanceReporter::cp_2);
-                auto search_result = finder.parallel_find(_user_command.getPayload(),2);
+                auto search_result = finder.parallel_find(this->dictionary, _user_command.getPayload(), 2);
                 //auto search_result = dictionary.find(_user_command.getPayload());
                 _performance_reporter.logTime(PerformanceReporter::cp_3);
                 if(!search_result.second)

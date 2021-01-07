@@ -6,13 +6,14 @@
 #include <parallel/finder.h>
 
 namespace parallel {
-    Finder::Finder(dictionary::Dictionary dictionary) : dictionary{dictionary} {
+    Finder::Finder() {
         //
     }
 
-    std::pair<std::string, bool> Finder::parallel_find(const std::string &search_key,
+    std::pair<std::string, bool> Finder::parallel_find(const dictionary::Dictionary &dictionary,
+                                                       const std::string &search_key,
                                                        const unsigned int num_threads) {
-        const std::map<std::string, std::string> dictionary_cache = this->dictionary.get_cache();
+        const std::map<std::string, std::string> dictionary_cache = dictionary.get_cache();
         std::pair<std::string, bool> search_result{"", false};
         std::map<std::string, std::string>::const_iterator dictionary_iterator = dictionary_cache.begin();
         unsigned int dictionary_index{0};

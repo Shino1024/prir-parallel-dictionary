@@ -109,7 +109,7 @@ class DictServiceInvoker {
         int PutDictionaryEntry(DictQueryDTO);
     private:
         dictionary::Dictionary dictionary;
-        parallel::Finder finder{dictionary};
+        parallel::Finder finder{};
 
 };
 
