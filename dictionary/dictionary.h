@@ -10,6 +10,16 @@ namespace dictionary {
         NoError,
         NonexistentKeyError,
         AlreadyExistingKeyError,
+        ParseError,
+        OtherError
+    };
+
+    enum class DictionaryOperation : uint8_t {
+        Insertion,
+        Update,
+        Removal,
+        Search,
+        WrongOp
     };
 
     class Dictionary {

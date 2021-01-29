@@ -127,7 +127,7 @@ Enables main User Interface method GetUserCommand. Presents prompt, parses input
 class CommandLine {
 
     public:
-        int ProcessUserCommands();
+        std::pair<dictionary::DictionaryOperation, std::string> ProcessUserCommands();
 
     private:
         Parser parser;

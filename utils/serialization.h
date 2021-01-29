@@ -11,6 +11,9 @@ namespace serialization {
     extern const std::string InsideSeparator;
     extern const std::string OutsideSeparator;
 
+    std::vector<std::string> split_string(const std::string &string_to_split,
+                                                 const std::string &separator);
+
     class DictSerializer {
     private:
         dictionary::Dictionary dictionary{};
@@ -27,9 +30,6 @@ namespace serialization {
         dictionary::Dictionary dictionary{};
         std::string data{};
 
-        std::vector<std::string> split_string(const std::string &string_to_split,
-                                              const std::string &separator);
-        
     public:
         DictDeserializer(const std::string &data);
         bool deserialize();

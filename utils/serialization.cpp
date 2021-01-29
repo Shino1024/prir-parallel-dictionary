@@ -3,6 +3,7 @@
 #include <vector>
 #include <sstream>
 #include <iostream>
+#include <cstring>
 
 #include "serialization.h"
 
@@ -46,8 +47,8 @@ namespace serialization {
         //
     }
 
-    std::vector<std::string> DictDeserializer::split_string(const std::string &string_to_split,
-                                                            const std::string &separator) {
+    std::vector<std::string> split_string(const std::string &string_to_split,
+                                          const std::string &separator) {
         std::vector<std::string> string_parts{};
 
         std::stringstream stream{string_to_split};
@@ -72,7 +73,7 @@ namespace serialization {
             return false;
         }
 
-        const auto value_pairs = this->split_string(this->data, OutsideSeparator);
+        const auto value_pairs = split_string(this->data, OutsideSeparator);
         for (const auto &value_pair : value_pairs) {
             if (value_pair == "") {
                 break;
@@ -80,7 +81,7 @@ namespace serialization {
             if (std::count(value_pair.begin(), value_pair.end(), *InsideSeparator.c_str()) != 1) {
                 return false;
             }
-            const auto pair = this->split_string(value_pair, InsideSeparator);
+            const auto pair = split_string(value_pair, InsideSeparator);
             if (pair.size() != 2) {
                 return false;
             }

@@ -1,4 +1,5 @@
 #include <utils/command_line.h>
+#include <utility>
 #define SNAPSHOT_FILENAME "dictionary_snapshot.csv"
 
 
@@ -263,38 +264,44 @@ int DictServiceInvoker::SaveDictionary(){
 
 
 
-int CommandLine::ProcessUserCommands(){  
+std::pair<dictionary::DictionaryOperation, std::string> CommandLine::ProcessUserCommands(){  
     
-    int exit_flag = 0;
+    // int exit_flag = 0;
 
     
-    invoker.InitDictionaryFromFile(SNAPSHOT_FILENAME);
+    // invoker.InitDictionaryFromFile(SNAPSHOT_FILENAME);
 
-    do{
-        PromptEntry();
-        _input = GetInput();
-        performance_reporter.logTime(PerformanceReporter::cp_1);
+    // do{
+    PromptEntry();
+    _input = GetInput();
+    performance_reporter.logTime(PerformanceReporter::cp_1);
 
-        user_command = parser.ParseUserEntry(_input);
-        cout <<endl <<"Command entered:" <<user_command.getOperation() <<" " <<user_command.getPayload() <<endl;
+    user_command = parser.ParseUserEntry(_input);
+    cout <<endl <<"Command entered:" <<user_command.getOperation() <<" " <<user_command.getPayload() <<endl;
 
-        exit_flag = invoker.ExecuteUserCommand(query_result, user_command, performance_reporter);
+    // exit_flag = invoker.ExecuteUserCommand(query_result, user_command, performance_reporter);
 
-        performance_reporter.logTime(PerformanceReporter::cp_4);
-        performance_reporter.show_time_report();
-    }while(exit_flag == 0);
-    return 0;
+    dictionary::DictionaryOperation dictionaryOperation{};
+    if (user_command.getOperation() == find_entry) {
+        dictionaryOperation = dictionary::DictionaryOperation::Search;
+    } else if (user_command.getOperation() == delete_entry) {
+        dictionaryOperation = dictionary::DictionaryOperation::Removal;
+    } else if (user_command.getOperation() == put_entry) {
+        dictionaryOperation = dictionary::DictionaryOperation::Insertion;
+    } else if (user_command.getOperation() == update_entry) {
+        dictionaryOperation = dictionary::DictionaryOperation::Update;
+    }
+
+    performance_reporter.logTime(PerformanceReporter::cp_4);
+    performance_reporter.show_time_report();
+
+    return {dictionaryOperation, user_command.getPayload()};
+    // }while(exit_flag == 0);
+    // return 0;
 }
-
 
 string CommandLine::GetInput(){
     string input_string;        
     getline(cin, input_string);
     return input_string;
 }
-
-
-
-
-
-
