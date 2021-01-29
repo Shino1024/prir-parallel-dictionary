@@ -31,12 +31,6 @@ int main(int argc, char *argv[]) {
         runDictionaryMPIService(dictionary);
     }
 
-// CommandLine commandLine;
-
-// //performance_reporter.show_time_report();
-
-// commandLine.ProcessUserCommands();
-
     MPI_Finalize();
 
 }
