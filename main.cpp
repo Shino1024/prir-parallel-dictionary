@@ -154,7 +154,8 @@ bool runDictionaryMPIService(dictionary::Dictionary &dictionary) {
         }
 
         MPI_Send(&dictionary_error, 1, MPI_CHAR, source, tag, MPI_COMM_WORLD);
-        if (tag == static_cast<int>(dictionary::DictionaryOperation::Search)) {
+        if (tag == static_cast<int>(dictionary::DictionaryOperation::Search) && dictionary_error == dictionary::DictionaryError::NoError) {
+            std::cout << "AAAAA: " << std::strlen(buffer) + 1 << std::endl;
             MPI_Send(buffer, std::strlen(buffer) + 1, MPI_CHAR, source, static_cast<int>(dictionary::DictionaryOperation::Search), MPI_COMM_WORLD);
         }
 
@@ -165,11 +166,10 @@ bool runDictionaryMPIService(dictionary::Dictionary &dictionary) {
 }
 
 bool runCommandLineService(dictionary::Dictionary &dictionary) {
+    unsigned int currentInsertWorkerNum{1};
     while (true) {
         CommandLine commandLine{};
         const auto input = commandLine.ProcessUserCommands();
-
-        unsigned int currentInsertWorkerNum{1};
 
         char *sendBuffer{};
         sendBuffer = new char[input.second.size() + 1];
@@ -187,7 +187,56 @@ bool runCommandLineService(dictionary::Dictionary &dictionary) {
                 const std::string key = pair[0];
                 const std::string value = pair[1];
                 std::sprintf(sendBuffer, "%s;%s", key.c_str(), value.c_str());
-                sendSize = std::strlen(sendBuffer);
+                sendSize = std::strlen(sendBuffer) + 1;
+
+                bool searchSuccessful{false};
+                int processWithKey{0};
+                for (int other_rank = 1; other_rank < dictionaryMPInumtasks; ++other_rank) {
+                    MPI_Send(key.c_str(), key.size() + 1, MPI_CHAR, other_rank, static_cast<int>(dictionary::DictionaryOperation::Search), MPI_COMM_WORLD);
+                }
+                std::cout << "aaa" << std::endl;
+
+                for (int other_rank = 1; other_rank < dictionaryMPInumtasks; ++other_rank) {
+                    MPI_Recv(&dictionaryError, 1, MPI_CHAR, other_rank, static_cast<int>(dictionary::DictionaryOperation::Search), MPI_COMM_WORLD, &status);
+                    if (status.MPI_ERROR != MPI_SUCCESS) {
+                        printMPICommunicationError(status.MPI_ERROR, dictionary::DictionaryOperation::Search, "receiving", "searching");
+
+                        continue;
+                    }
+                std::cout << "ccc" << std::endl;
+
+                    if (dictionaryError == dictionary::DictionaryError::NoError) {
+                        processWithKey = other_rank;
+                        searchSuccessful = true;
+                    }
+                }
+                std::cout << "ddd" << std::endl;
+
+                if (searchSuccessful) {
+                std::cout << "aeeeeaa" << std::endl;
+                    MPI_Probe(processWithKey, static_cast<int>(dictionary::DictionaryOperation::Search), MPI_COMM_WORLD, &status);
+                    if (status.MPI_ERROR != MPI_SUCCESS) {
+                        printMPICommunicationError(status.MPI_ERROR, dictionary::DictionaryOperation::Search, "probing", "searching (2nd step)");
+
+                        continue;
+                    }
+                    std::cout << "YYYYY: " << status._ucount << std::endl;
+
+                    recvBuffer = new char[status._ucount];
+                    MPI_Recv(recvBuffer, status._ucount, MPI_CHAR, processWithKey, static_cast<int>(dictionary::DictionaryOperation::Search), MPI_COMM_WORLD, &status);
+                    if (status.MPI_ERROR != MPI_SUCCESS) {
+                        printMPICommunicationError(status.MPI_ERROR, dictionary::DictionaryOperation::Search, "receiving", "searching (2nd step)");
+
+                        continue;
+                    }
+
+                    std::cout << "Key " << key <<
+                                 " already exists in process rank " << processWithKey <<
+                                 " with value " << recvBuffer << std::endl <<
+                                 "Operation failed" << std::endl;
+
+                    continue;
+                }
 
                 if (currentInsertWorkerNum == dictionaryMPInumtasks - 1) {
                     currentInsertWorkerNum = 1;
@@ -213,7 +262,7 @@ bool runCommandLineService(dictionary::Dictionary &dictionary) {
                 const std::string key = pair[0];
                 const std::string value = pair[1];
                 std::sprintf(sendBuffer, "%s;%s", key.c_str(), value.c_str());
-                sendSize = std::strlen(sendBuffer);
+                sendSize = std::strlen(sendBuffer) + 1;
 
                 bool updateSuccessful{false};
                 for (int other_rank = 1; other_rank < dictionaryMPInumtasks; ++other_rank) {
@@ -242,7 +291,7 @@ bool runCommandLineService(dictionary::Dictionary &dictionary) {
             case dictionary::DictionaryOperation::Removal: {
                 const std::string key = input.second;
                 std::sprintf(sendBuffer, "%s", key.c_str());
-                sendSize = std::strlen(sendBuffer);
+                sendSize = std::strlen(sendBuffer) + 1;
 
                 bool removalSuccessful{false};
                 for (int other_rank = 1; other_rank < dictionaryMPInumtasks; ++other_rank) {

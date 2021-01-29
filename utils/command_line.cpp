@@ -49,7 +49,7 @@ UserCommandDTO Parser::ParseUserEntry(string _entry){
 void Parser::SetParseError()
 {
     user_command.setOperation(unknown);
-    user_command.setPayload("Invalid entry.\n");
+    user_command.setPayload("");
 };
 
 string Parser::ParseFilename(string _entry){
@@ -290,6 +290,8 @@ std::pair<dictionary::DictionaryOperation, std::string> CommandLine::ProcessUser
         dictionaryOperation = dictionary::DictionaryOperation::Insertion;
     } else if (user_command.getOperation() == update_entry) {
         dictionaryOperation = dictionary::DictionaryOperation::Update;
+    } else {
+        dictionaryOperation = dictionary::DictionaryOperation::WrongOp;
     }
 
     performance_reporter.logTime(PerformanceReporter::cp_4);
