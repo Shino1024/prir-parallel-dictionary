@@ -19,6 +19,7 @@ namespace dictionary {
         Update,
         Removal,
         Search,
+        Init,
         WrongOp
     };
 

@@ -110,8 +110,8 @@ class DictServiceInvoker {
         int InitDictionaryFromFile(string);
         int SaveDictionary();
         int PutDictionaryEntry(DictQueryDTO);
-    private:
         dictionary::Dictionary dictionary;
+    private:
         parallel::Finder finder{};
 
 };
@@ -128,13 +128,13 @@ class CommandLine {
 
     public:
         std::pair<dictionary::DictionaryOperation, std::string> ProcessUserCommands();
+        DictServiceInvoker invoker;
 
     private:
         Parser parser;
         string _input;
         DictQueryDTO query_result;
         UserCommandDTO user_command;
-        DictServiceInvoker invoker;
         PerformanceReporter performance_reporter;
 
         void PromptEntry(){cout <<endl <<"[Paralel_Dictionary] Enter Command: ";};

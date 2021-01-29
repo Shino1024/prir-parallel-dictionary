@@ -10,6 +10,7 @@
 #include <utils/report_creation.h>
 #include <utils/serialization.h>
 #include <utils/command_line.h>
+#include <utils/performance_reporter.h>
 
 bool runDictionaryMPIService(dictionary::Dictionary &dictionary);
 bool runCommandLineService(dictionary::Dictionary &dictionary);
@@ -45,6 +46,7 @@ bool runDictionaryMPIService(dictionary::Dictionary &dictionary) {
         MPI_Probe(MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         if (status.MPI_ERROR != MPI_SUCCESS) {
             printMPICommunicationError(status.MPI_ERROR, dictionary::DictionaryOperation::WrongOp, "probing", "[all data]");
+            continue;
         }
         dictionaryMPIcount = status._ucount;
         tag = status.MPI_TAG;
@@ -53,10 +55,18 @@ bool runDictionaryMPIService(dictionary::Dictionary &dictionary) {
         MPI_Recv(buffer, dictionaryMPIcount, MPI_CHAR, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
         if (status.MPI_ERROR != MPI_SUCCESS) {
             printMPICommunicationError(status.MPI_ERROR, dictionary::DictionaryOperation::WrongOp, "receiving", "[all data]");
+            continue;
         }
         const std::string data{buffer};
         
         switch (tag) {
+            case static_cast<int>(dictionary::DictionaryOperation::Init): {
+                const auto pair = serialization::split_string(data, serialization::InsideSeparator);
+                const std::string key = pair[0];
+                const std::string value = pair[1];
+                dictionary.insert(key, value);
+                break;
+            }
             case static_cast<int>(dictionary::DictionaryOperation::Insertion): {
                 if (std::count(data.begin(), data.end(), *(serialization::InsideSeparator.c_str())) != 1) {
                     std::cout << "The received value:" << std::endl <<
@@ -161,9 +171,11 @@ bool runDictionaryMPIService(dictionary::Dictionary &dictionary) {
 bool runCommandLineService(dictionary::Dictionary &dictionary) {
     unsigned int currentInsertWorkerNum{1};
     while (true) {
+        PerformanceReporter pr{};
         CommandLine commandLine{};
         const auto input = commandLine.ProcessUserCommands();
 
+        pr.logTime(PerformanceReporter::checkpoint::cp_1);
         char *sendBuffer{};
         sendBuffer = new char[input.second.size() + 1];
         // std::memncpy(sendBuffer, input.second.c_str(), input.second.size());
@@ -175,6 +187,26 @@ bool runCommandLineService(dictionary::Dictionary &dictionary) {
         MPI_Status status;
 
         switch (input.first) {
+            case dictionary::DictionaryOperation::Init: {
+                file::FileReader fr{input.second};
+                fr.read_file();
+                const auto frd = fr.get_buffer();
+                serialization::DictDeserializer ds{frd};
+                ds.deserialize();
+                const auto d = ds.get_dictionary().get_cache();
+                for (const auto &[key_, value_] : d) {
+                    const std::string payload = key_ + serialization::InsideSeparator + value_;
+                    MPI_Send(payload.c_str(), payload.size() + 1, MPI_CHAR, currentInsertWorkerNum, static_cast<int>(dictionary::DictionaryOperation::Init), MPI_COMM_WORLD);
+
+                    if (currentInsertWorkerNum == dictionaryMPInumtasks - 1) {
+                        currentInsertWorkerNum = 1;
+                    } else {
+                        ++currentInsertWorkerNum;
+                    }
+                    dictionary.insert(key_, value_);
+                }
+                break;
+            }
             case dictionary::DictionaryOperation::Insertion: {
                 const auto pair = serialization::split_string(input.second, " ");
                 const std::string key = pair[0];
@@ -226,11 +258,6 @@ bool runCommandLineService(dictionary::Dictionary &dictionary) {
                     continue;
                 }
 
-                if (currentInsertWorkerNum == dictionaryMPInumtasks - 1) {
-                    currentInsertWorkerNum = 1;
-                } else {
-                    ++currentInsertWorkerNum;
-                }
                 MPI_Send(sendBuffer, sendSize, MPI_CHAR, currentInsertWorkerNum, static_cast<int>(dictionary::DictionaryOperation::Insertion), MPI_COMM_WORLD);
 
                 MPI_Recv(&dictionaryError, 1, MPI_CHAR, currentInsertWorkerNum, static_cast<int>(dictionary::DictionaryOperation::Insertion), MPI_COMM_WORLD, &status);
@@ -239,6 +266,12 @@ bool runCommandLineService(dictionary::Dictionary &dictionary) {
                     continue;
                 }
 
+                if (currentInsertWorkerNum == dictionaryMPInumtasks - 1) {
+                    currentInsertWorkerNum = 1;
+                } else {
+                    ++currentInsertWorkerNum;
+                }
+                
                 std::cout << "Insertion of key " << key << " in process rank " << currentInsertWorkerNum << " has been successful" << std::endl;
 
                 break;
@@ -361,6 +394,9 @@ bool runCommandLineService(dictionary::Dictionary &dictionary) {
         sendBuffer = nullptr;
         delete[] recvBuffer;
         recvBuffer = nullptr;
+
+        pr.logTime(PerformanceReporter::checkpoint::cp_4);
+        pr.show_time_report();
     }
 }
 

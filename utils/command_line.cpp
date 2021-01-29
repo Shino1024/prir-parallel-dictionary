@@ -279,7 +279,7 @@ std::pair<dictionary::DictionaryOperation, std::string> CommandLine::ProcessUser
     user_command = parser.ParseUserEntry(_input);
     cout <<endl <<"Command entered:" <<user_command.getOperation() <<" " <<user_command.getPayload() <<endl;
 
-    // exit_flag = invoker.ExecuteUserCommand(query_result, user_command, performance_reporter);
+    // invoker.ExecuteUserCommand(query_result, user_command, performance_reporter);
 
     dictionary::DictionaryOperation dictionaryOperation{};
     if (user_command.getOperation() == find_entry) {
@@ -290,6 +290,8 @@ std::pair<dictionary::DictionaryOperation, std::string> CommandLine::ProcessUser
         dictionaryOperation = dictionary::DictionaryOperation::Insertion;
     } else if (user_command.getOperation() == update_entry) {
         dictionaryOperation = dictionary::DictionaryOperation::Update;
+    } else if (user_command.getOperation() == init) {
+        dictionaryOperation = dictionary::DictionaryOperation::Init;
     } else {
         dictionaryOperation = dictionary::DictionaryOperation::WrongOp;
     }
